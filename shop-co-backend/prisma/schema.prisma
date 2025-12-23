@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// users
+
+model User{
+  id Int @id @default(autoincrement())
+  email String @unique
+  firstName String
+  lastName String
+  phoneNumber String
+  password String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  refreshToken RefreshToken[]
+  expediations Expediations[]
+  reviews Review[]
+}
+
+model RefreshToken{
+  id Int @id @default(autoincrement())
+  token String @unique
+  userId Int 
+  rid String
+  expiresAt DateTime
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  revoked Boolean @default(false)
+  user User @relation(fields: [userId], references: [id])
+}
+
+model BlackListedToken{
+  id Int @id @default(autoincrement())
+  jti String @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+// Product
+
+model Product{
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  price Float
+  brand String?
+  imageUrl String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sales Sales[]
+  details ProductDetails?
+  reviews Review[]
+}
+
+// sales
+
+model Sales{
+  id Int @id @default(autoincrement())
+  productId Int
+  salesPercent Float
+  saleDate DateTime @default(now())
+  expiryDate DateTime
+  product Product @relation(fields: [productId], references: [id])
+  
+}
+
+// details
+
+model ProductDetails{
+  id Int @id @default(autoincrement())
+  productId Int @unique
+  color String
+  size String
+  gender String
+  type String?
+  style String?
+  product Product @relation(fields: [productId], references: [id])
+}
+
+// expediations
+
+model Expediations{
+  id Int @id @default(autoincrement())
+  name String
+  address String
+  phoneNumber String
+  userId Int
+  createdAt DateTime @default(now())
+  status Boolean @default(false)
+  cost Float
+  user User @relation(fields: [userId], references: [id])
+}
+
+// reviews
+
+model Review{
+  id Int @id @default(autoincrement())
+  userId Int
+  productId Int
+  rating Int
+  comment String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
