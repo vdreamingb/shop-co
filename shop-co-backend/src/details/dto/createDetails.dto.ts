@@ -1,36 +1,7 @@
 import { Type } from "class-transformer";
 import { IsEnum, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
+import { SizeEnum, TypeEnum, StyleEnum, GenderEnum } from "./data.enums";
 
-enum SizeEnum {
-    XXS = "XX-Small",
-    XS = "X-Smal",
-    L = "Large",
-    M = "Medium",
-    XL = "X-Large",
-    XXL = "XX-Large",
-    XXXL = "3X-Large",
-    XXXXL = "4X-Large"
-}
-
-enum StyleEnum {
-    casual = "Casual",
-    formal = "Formal",
-    party = "Party",
-    gym = "Gym" 
-}
-
-enum TypeEnum{
-    tshirt = "Tshirts",
-    shorts = "Shorts",
-    hoodie = "Hoodie",
-    jeans = "Jeans"
-}
-
-enum GenderEnum{
-    m = "Masculine",
-    f = "Feminine",
-    u = "Unisex"
-}
 
 export class createDetailsDto{
     @Type(() => Number)
@@ -54,5 +25,13 @@ export class createDetailsDto{
 
     @IsOptional()
     @IsEnum(TypeEnum)
-    type:string
+    type?:string
+
+    @Type(() => Number)
+    @IsNumber()
+    stock: number
+
+    @Type(() => Number)
+    @IsNumber()
+    pricePercent: number
 }

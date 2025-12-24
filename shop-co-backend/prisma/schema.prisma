@@ -53,7 +53,7 @@ model Product{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   sales Sales[]
-  details ProductDetails?
+  details ProductDetails[]
   reviews Review[]
 }
 
@@ -73,12 +73,14 @@ model Sales{
 
 model ProductDetails{
   id Int @id @default(autoincrement())
-  productId Int @unique
+  productId Int
   color String
   size String
   gender String
   type String?
   style String?
+  stock Int
+  pricePercent Float
   product Product @relation(fields: [productId], references: [id])
 }
 

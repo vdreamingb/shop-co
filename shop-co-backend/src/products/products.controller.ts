@@ -22,6 +22,8 @@ export class ProductsController {
       return this.productsService.getAll()
   }
 
+
+
   @UseGuards(JwtGuard)
   @Put('modify/:id')
   async modifyProductData(@Body() body:CreateModifyDto, @Param('id', ParseIntPipe) id:number){
@@ -32,5 +34,11 @@ export class ProductsController {
   @Delete('delete/:id')
   async deleteProduct(@Param('id', ParseIntPipe) id: number){
     return this.productsService.deleteProduct(id)
+  }
+
+  @UseGuards(JwtGuard)
+  @Get(':id')
+  async getProductById(@Param('id', ParseIntPipe) id: number){
+    return this.productsService.getProductById(id)
   }
 }
