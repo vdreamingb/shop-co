@@ -3,10 +3,6 @@ import { Type } from "class-transformer";
 export class CreateSaleDto{
     @Type(() => Number)
     @IsNumber()
-    id: number;
-
-    @Type(() => Number)
-    @IsNumber()
     productId: number;
 
     @Type(() => Number)
@@ -15,9 +11,9 @@ export class CreateSaleDto{
 
     @Type(() => Date)
     @IsDate()
-    saleDate: Date;
+    saleDate: string;
 
     @Type(() => Date)
     @IsDate()
-    expiryDate: Date;
+    expiryDate: string;
 }

@@ -249,4 +249,17 @@ export class AuthService {
       return error.message;
     }
   }
+
+  async getUserId(req: Request) {
+    try {
+      const token = ExtractJwt.fromAuthHeaderAsBearerToken()(req) as string;
+      const payload = this.jwtService.verify(token, {
+        secret: this.configService.get<string>("ACCESS_SECRET"),
+      });
+
+      return payload.sub;
+    } catch (error) {
+      return error.message;
+    }
+  }
 }

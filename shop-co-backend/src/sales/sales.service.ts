@@ -9,11 +9,10 @@ export class SalesService {
     async createSale(data: CreateSaleDto){
         return await this.prismaService.sales.create({
             data: {
-                id: data.id,
                 productId: data.productId,
                 salesPercent: data.salesPercent,
-                saleDate: data.saleDate,
-                expiryDate: data.expiryDate,
+                saleDate: new Date(data.saleDate),
+                expiryDate: new Date(data.expiryDate),
             },
         });
     }
@@ -53,7 +52,7 @@ export class SalesService {
                     id,
                 },
                 data: {
-                    expiryDate,
+                    expiryDate: new Date(expiryDate),
                 },  
             });
         }
@@ -69,7 +68,7 @@ export class SalesService {
                     id,
                 },
                 data: {
-                    saleDate,
+                    saleDate: new Date(saleDate),
                 },  
             });
         }

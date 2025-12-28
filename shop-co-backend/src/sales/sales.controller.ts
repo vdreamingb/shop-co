@@ -45,8 +45,8 @@ export class SalesController {
   }
 
   @UseGuards(JwtGuard)
-  @Delete('remove/:id')
-  async removeSale(@Param('id', ParseIntPipe) id: number){
+  @Delete('delete/:id')
+  async deleteSale(@Param('id', ParseIntPipe) id: number){
     return this.salesService.deleteSale(id);
   }
 }
