@@ -1,9 +1,9 @@
 import { Type } from "class-transformer";
 import { IsEnum, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
-import { SizeEnum, TypeEnum, StyleEnum, GenderEnum } from "./data.enums";
+import { SizeEnum, TypeEnum, StyleEnum, GenderEnum } from "src/common/enums/details.enum";
 
 
-export class createDetailsDto{
+export class CreateDetailsDto{
     @Type(() => Number)
     @IsNumber()
     productId: number

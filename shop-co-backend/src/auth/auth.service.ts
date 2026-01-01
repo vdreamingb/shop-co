@@ -3,6 +3,8 @@ import {
   BadRequestException,
   UnauthorizedException,
   ExecutionContext,
+  Logger,
+  InternalServerErrorException,
 } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { ConfigService } from "@nestjs/config";
@@ -14,21 +16,33 @@ import { ExtractJwt } from "passport-jwt";
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name, { timestamp: true})
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
   ) {}
+
+  private handleError(error: unknown): never {
+    const message = error instanceof Error ? error.message : String(error);
+    this.logger.error(message, error instanceof Error ? error.stack : undefined);
+    throw new InternalServerErrorException('Something went wrong');
+  }
 
   async register(
     email: string,
     password: string,
     firstName: string,
     lastName: string,
-    phoneNumber: string
+    phoneNumber: string,
+    role: string | undefined
   ) {
+
+    this.logger.log("Registering user");
     const exists = await this.prisma.user.findUnique({ where: { email } });
     if (exists) {
+      this.logger.warn("User with this email already exists");
       throw new BadRequestException("User with this email already exists");
     }
 
@@ -41,25 +55,32 @@ export class AuthService {
         firstName,
         lastName,
         phoneNumber,
+        role: role
       },
     });
+
+    return { message: "User registered successfully"}
   }
 
   async validateUser(email: string, password: string) {
+    this.logger.log("Validating user");
     const user = await this.prisma.user.findUnique({ where: { email } });
     if (!user) {
+      this.logger.warn("User not found");
       return null;
     }
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
+      this.logger.warn("Invalid password attempt");
       return null;
     }
     return user;
   }
 
   async issueTokens(userId: number) {
-    console.log(userId);
-    const payload = { sub: userId };
+    this.logger.log("Issuing tokens");
+    const role = (await this.prisma.user.findUnique({where: {id: userId}}))?.role;
+    const payload = { sub: userId, role};
 
     const accessToken = this.jwtService.sign(payload, {
       secret: this.configService.get<string>("ACCESS_SECRET"),
@@ -122,20 +143,24 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
+    this.logger.log("Logging in user");
     const user = await this.validateUser(email, password);
     if (!user) {
+      this.logger.warn("Invalid credentials provided");
       throw new UnauthorizedException("Invalid credentials");
     }
     return this.issueTokens(user.id);
   }
 
   async refresh(refreshToken: string) {
+    this.logger.log("Refreshing tokens...");
     let payload: any;
     try {
       payload = this.jwtService.verify(refreshToken, {
         secret: this.configService.get("REFRESH_SECRET"),
       });
     } catch {
+      this.logger.warn("Invalid refresh token provided");
       throw new UnauthorizedException("Invalid refresh token");
     }
 
@@ -146,6 +171,7 @@ export class AuthService {
     });
 
     if (tokens.length === 0) {
+      this.logger.warn("No refresh tokens found for user");
       throw new UnauthorizedException("Invalid refresh token");
     }
 
@@ -160,6 +186,7 @@ export class AuthService {
     }
 
     if (!matched) {
+      this.logger.warn("Refresh token not found in database");
       throw new UnauthorizedException("Refresh token not found");
     }
 
@@ -171,6 +198,7 @@ export class AuthService {
   }
 
   async logout(refreshToken: string) {
+    this.logger.log("Logging out user");
     let payload: any;
     try {
       payload = this.jwtService.verify(refreshToken, {
@@ -196,6 +224,7 @@ export class AuthService {
   }
 
   async blacklistAccessToken(accessToken: string) {
+    this.logger.log("Blacklisting access token");
     let payload: any;
     try {
       payload = this.jwtService.verify(accessToken, {
@@ -224,6 +253,7 @@ export class AuthService {
   }
 
   async whoAmI(req: Request) {
+    this.logger.log("Fetching user info");
     try {
       const token = ExtractJwt.fromAuthHeaderAsBearerToken()(req) as string;
       const payload = this.jwtService.verify(token, {
@@ -236,6 +266,7 @@ export class AuthService {
       });
 
       if (!user) {
+        this.logger.warn("User not found");
         throw new UnauthorizedException("User not found");
       }
       return {
@@ -246,20 +277,9 @@ export class AuthService {
         phoneNumber: user.phoneNumber,
       };
     } catch (error) {
+      this.logger.warn(error.message);
       return error.message;
     }
   }
 
-  async getUserId(req: Request) {
-    try {
-      const token = ExtractJwt.fromAuthHeaderAsBearerToken()(req) as string;
-      const payload = this.jwtService.verify(token, {
-        secret: this.configService.get<string>("ACCESS_SECRET"),
-      });
-
-      return payload.sub;
-    } catch (error) {
-      return error.message;
-    }
-  }
 }
