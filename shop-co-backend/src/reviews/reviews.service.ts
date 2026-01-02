@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateReviewDto } from './dto/createReview.dto';
-import { AuthService } from 'src/auth/auth.service';
 import { Logger, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
@@ -9,7 +8,7 @@ import { Prisma } from '@prisma/client';
 export class ReviewsService {
     private readonly logger = new Logger(ReviewsService.name, { timestamp: true})
 
-    constructor(private readonly prismaService: PrismaService, private readonly authService: AuthService){}
+    constructor(private readonly prismaService: PrismaService){}
 
     private handleError(error: unknown): never {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
