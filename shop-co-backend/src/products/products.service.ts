@@ -110,4 +110,20 @@ export class ProductsService {
       this.handleError(error);
     }
   }
+
+  async getTopSellings(){
+    this.logger.log("Fetching top selling products");
+    try {
+      const products = await this.prismaService.product.findMany({
+        orderBy: {
+          price: 'desc'
+        },
+        take: 5
+      })
+      this.logger.log("Top selling products fetched successfully");
+      return products;
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
 }

@@ -4,7 +4,6 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { Observable } from "rxjs";
 import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()

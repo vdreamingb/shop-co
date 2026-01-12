@@ -21,6 +21,12 @@ export class ProductsController {
   }
 
   @UseGuards(JwtGuard)
+  @Get('top-sellings')
+  async getTopProducts(){
+    return this.productsService.getTopSellings()
+  }
+
+  @UseGuards(JwtGuard)
   @Get('all')
   async getAllProducts(){
       return this.productsService.getAll()
@@ -45,4 +51,6 @@ export class ProductsController {
   async getProductById(@Param('id', ParseIntPipe) id: number){
     return this.productsService.getProductById(id)
   }
+
+  
 }
