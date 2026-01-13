@@ -8,6 +8,12 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: ['http://localhost:3000'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  });
   const config = new DocumentBuilder()
     .setTitle("Shop-co endpoints")
     .setDescription("Shop-co website backend enpoints")
@@ -24,6 +30,6 @@ async function bootstrap() {
   app.use(cookieParser());
   app.use(helmet());
   app.setGlobalPrefix("api");
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 1110);
 }
 bootstrap();

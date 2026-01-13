@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+}
+
+
+body {
+  background-color: #ffffff;
+  color: var(--foreground);
+  font-family: var(--font-satoshi), sans-serif;
+
+}
+
+.font-satoshi {
+  font-family: var(--font-satoshi), sans-serif;
+}
+
+.font-integral {
+  font-family: var(--font-integral-cf), sans-serif;
+}
+
+.count{
+  animation-iteration-count: 1;
+}
