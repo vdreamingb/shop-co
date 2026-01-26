@@ -2,25 +2,44 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #000000;
+  --foreground: #171717;
 }
-
 
 body {
-  background-color: #ffffff;
+  background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-satoshi), sans-serif;
-
+  
 }
 
-.font-satoshi {
-  font-family: var(--font-satoshi), sans-serif;
+.integral{
+  font-family: "IntegralCF", sans-serif;
 }
 
-.font-integral {
-  font-family: var(--font-integral-cf), sans-serif;
+.pulse{
+  animation: pulseAnimation 3s ease-in-out;
 }
 
-.count{
-  animation-iteration-count: 1;
+@keyframes pulseAnimation{
+  0%,100%{
+    opacity: 1;
+  }
+  50%{
+    opacity: 0.5;
+  }
+}
+
+.form-input{
+  border-radius: 15px;
+  display: block;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 18px;
+  background-color: #F0F0F0;
+}
+
+.form-input::placeholder{
+  color: rgb(0,0,0,0.4);
 }

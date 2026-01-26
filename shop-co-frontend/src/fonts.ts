@@ -3,43 +3,41 @@ import localFont from "next/font/local"
 export const satoshi = localFont({
     src: [
         {
-            path: "../public/fonts/satoshi/Satoshi-Regular.otf",
+            path: "../public/satoshi/Satoshi-Regular.otf",
             weight: "400",
-            style: "normal"
+            style: "normal",
         },
         {
-            path: "../public/fonts/satoshi/Satoshi-Medium.otf",
+            path: "../public/satoshi/Satoshi-Medium.otf",
             weight: "500",
-            style: "normal"
+            style: "normal",
         },
         {
-            path: "../public/fonts/satoshi/Satoshi-Bold.otf",
+            path: "../public/satoshi/Satoshi-Bold.otf",
             weight: "700",
-            style: "normal"
-        },
+            style: "normal",
+        }
     ],
-    variable: "--font-satoshi",
-    display: "swap"
+    variable: "--font-satoshi"
 })
 
 export const integralCF = localFont({
-    src: [
+    src:[
         {
-            path: "../public/fonts/Integral_CF_Font/Demo_Fonts/Fontspring-DEMO-integralcf-regular.otf",
+            path: "../public/Integral_CF_Font/Fontspring-DEMO-integralcf-regular.otf",
             weight: "400",
-            style: "normal"
+            style: "normal",
         },
         {
-            path: "../public/fonts/Integral_CF_Font/Demo_Fonts/Fontspring-DEMO-integralcf-medium.otf",
+            path: "../public/Integral_CF_Font/Fontspring-DEMO-integralcf-medium.otf",
             weight: "500",
-            style: "normal"
+            style: "normal",
         },
         {
-            path: "../public/fonts/Integral_CF_Font/Demo_Fonts/Fontspring-DEMO-integralcf-bold.otf",
+            path: "../public/Integral_CF_Font/Fontspring-DEMO-integralcf-bold.otf",
             weight: "700",
-            style: "normal"
+            style: "normal",
         }
     ],
-    variable: "--font-integral-cf",
-    display: "swap"
+    variable: "--font-integralCF"
 })

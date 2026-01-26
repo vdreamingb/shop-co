@@ -8,10 +8,13 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.use(cookieParser());
+
   app.enableCors({
-    origin: ['http://localhost:3000'],
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   });
   const config = new DocumentBuilder()
@@ -25,9 +28,9 @@ async function bootstrap() {
   app.useLogger(
     new ConsoleLogger({
       prefix: "Shop-co-backend",
-    })
+    }),
   );
-  app.use(cookieParser());
+
   app.use(helmet());
   app.setGlobalPrefix("api");
   await app.listen(process.env.PORT ?? 1110);

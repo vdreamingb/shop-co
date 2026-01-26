@@ -2,7 +2,6 @@ import {
   Injectable,
   BadRequestException,
   UnauthorizedException,
-  ExecutionContext,
   Logger,
   InternalServerErrorException,
 } from "@nestjs/common";
@@ -13,10 +12,11 @@ import * as bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import { ref } from "process";
 import { ExtractJwt } from "passport-jwt";
+import { Request, Response } from "express";
 
 @Injectable()
 export class AuthService {
-  private readonly logger = new Logger(AuthService.name, { timestamp: true})
+  private readonly logger = new Logger(AuthService.name, { timestamp: true });
 
   constructor(
     private readonly prisma: PrismaService,
@@ -26,8 +26,11 @@ export class AuthService {
 
   private handleError(error: unknown): never {
     const message = error instanceof Error ? error.message : String(error);
-    this.logger.error(message, error instanceof Error ? error.stack : undefined);
-    throw new InternalServerErrorException('Something went wrong');
+    this.logger.error(
+      message,
+      error instanceof Error ? error.stack : undefined,
+    );
+    throw new InternalServerErrorException("Something went wrong");
   }
 
   async register(
@@ -36,9 +39,8 @@ export class AuthService {
     firstName: string,
     lastName: string,
     phoneNumber: string,
-    role: string | undefined
+    role: string | undefined,
   ) {
-
     this.logger.log("Registering user");
     const exists = await this.prisma.user.findUnique({ where: { email } });
     if (exists) {
@@ -55,11 +57,11 @@ export class AuthService {
         firstName,
         lastName,
         phoneNumber,
-        role: role
+        role: role,
       },
     });
 
-    return { message: "User registered successfully"}
+    return { message: "User registered successfully" };
   }
 
   async validateUser(email: string, password: string) {
@@ -77,15 +79,16 @@ export class AuthService {
     return user;
   }
 
-  async issueTokens(userId: number) {
+  async issueTokens(userId: number, res: Response) {
     this.logger.log("Issuing tokens");
-    const role = (await this.prisma.user.findUnique({where: {id: userId}}))?.role;
-    const payload = { sub: userId, role};
+    const role = (await this.prisma.user.findUnique({ where: { id: userId } }))
+      ?.role;
+    const payload = { sub: userId, role };
 
     const accessToken = this.jwtService.sign(payload, {
       secret: this.configService.get<string>("ACCESS_SECRET"),
       expiresIn:
-        (this.configService.get<string>("ACCESS_EXPIRES_IN") as any) || "15m",
+        (this.configService.get<string>("ACCESS_EXPIRES_IN") as any) || "7m",
     });
 
     const refreshId = uuidv4();
@@ -96,14 +99,14 @@ export class AuthService {
         expiresIn:
           (this.configService.get<string>("REFRESH_EXPIRES_IN") as any) ||
           "60d",
-      }
+      },
     );
 
     const expiryDate = new Date(
       Date.now() +
         this.parseDuration(
-          this.configService.get<string>("REFRESH_EXPIRES_IN") || "60d"
-        )
+          this.configService.get<string>("REFRESH_EXPIRES_IN") || "60d",
+        ),
     );
 
     const tokenHash = await bcrypt.hash(refreshToken, 10);
@@ -117,7 +120,24 @@ export class AuthService {
       },
     });
 
-    return { accessToken, refreshToken };
+    res.clearCookie("accessToken")
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: false,
+      maxAge: 1000 * 60 * 7,
+      sameSite: "lax",
+      path: "/"
+    });
+    res.clearCookie("refreshToken")
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+      sameSite: "lax",
+      path: "/"
+    });
+
+    return { message: "Tokens generated successfully" };
   }
 
   parseDuration(duration: string): number {
@@ -142,17 +162,17 @@ export class AuthService {
     }
   }
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string, res: Response) {
     this.logger.log("Logging in user");
     const user = await this.validateUser(email, password);
     if (!user) {
       this.logger.warn("Invalid credentials provided");
       throw new UnauthorizedException("Invalid credentials");
     }
-    return this.issueTokens(user.id);
+    return await this.issueTokens(user.id, res);
   }
 
-  async refresh(refreshToken: string) {
+  async refresh(refreshToken: string, res: Response) {
     this.logger.log("Refreshing tokens...");
     let payload: any;
     try {
@@ -194,7 +214,7 @@ export class AuthService {
       where: { id: matched.id },
     });
 
-    return this.issueTokens(userId);
+    return this.issueTokens(userId, res);
   }
 
   async logout(refreshToken: string) {
@@ -255,7 +275,7 @@ export class AuthService {
   async whoAmI(req: Request) {
     this.logger.log("Fetching user info");
     try {
-      const token = ExtractJwt.fromAuthHeaderAsBearerToken()(req) as string;
+      const token = req.cookies["accessToken"];
       const payload = this.jwtService.verify(token, {
         secret: this.configService.get<string>("ACCESS_SECRET"),
       });
@@ -282,4 +302,15 @@ export class AuthService {
     }
   }
 
+  async checkLogged(req: Request){
+    this.logger.log("Check if user is logged in")
+    try {
+      const accessToken = req.cookies["accessToken"]
+      if(!accessToken){
+        return {message: "Expired"}
+      }
+    } catch (error) {
+      this.handleError(error)    
+    }
+  }
 }
