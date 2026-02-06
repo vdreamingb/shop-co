@@ -18,7 +18,8 @@ class AuthService{
 
     async refresh(){
         try{
-            await axios.post("http://localhost:1110/api/auth/refresh",{},{ withCredentials: true })
+            const res = await axios.post("http://localhost:1110/api/auth/refresh",{},{ withCredentials: true })
+            return res.status
         }
         catch(error){
             console.log(error)
@@ -28,10 +29,25 @@ class AuthService{
     async loggedIn(){
         try {
             const res = await axios.get("http://localhost:1110/api/auth/logged", {withCredentials: true})
-            if(!res.data.logged){
-                return false
-            }
-            return true
+            return res.data
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    async whoamI(){
+        try {
+            const res = await axios.get("http://localhost:1110/api/auth/whoami", {withCredentials: true})
+            return res.data
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    async logout(){
+        try {
+            const res = await axios.post("http://localhost:1110/api/auth/logout", {}, {withCredentials: true})
+            return res.status
         } catch (error) {
             console.error(error)
         }

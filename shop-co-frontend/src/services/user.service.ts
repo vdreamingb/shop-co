@@ -1,15 +1,12 @@
+import { IUser } from "@/shared/types/user.types";
+import axios from "axios";
+
 class UserService{
-    async getUsers():Promise<any[]>{
+    async getUsers(): Promise<IUser | any[]> {
         try {
-            const response = await fetch("http://localhost:1110/api/users", {
-                method: "GET",
-                credentials: "include"
-            });
-            if(!response.ok){
-                throw new Error("Failed to fetch users");
-            }
-            const data = await response.json();
-            return data.users;
+            const res = await axios.get('http://localhost:1110/api/users', {withCredentials: true});
+            const data = res.data
+            return data;
         } catch (error) {
             if(error instanceof Error){
                 alert(error.message);
@@ -19,3 +16,5 @@ class UserService{
         }
     }
 }
+
+export const userService = new UserService();

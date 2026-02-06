@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 
-const metadata: Metadata = {
-    title: "Admin Panel"
+export const metadata: Metadata = {
+    title: "Admin Dashboard"
 }
 
 export default function AdminPage():React.JSX.Element{

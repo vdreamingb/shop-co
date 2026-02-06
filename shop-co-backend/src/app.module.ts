@@ -7,10 +7,12 @@ import { DetailsModule } from './details/details.module';
 import { SalesModule } from './sales/sales.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { ExpediationsModule } from './expediations/expediations.module';
+import { UsersModule } from './users/users.module';
+import { ExpediationItemsModule } from './expediation-items/expediation-items.module';
 @Module({
   imports: [AuthModule, ProductsModule, ConfigModule.forRoot({
     isGlobal: true
-  }), DetailsModule, SalesModule, ReviewsModule, ExpediationsModule],
+  }), DetailsModule, SalesModule, ReviewsModule, ExpediationsModule, UsersModule, ExpediationItemsModule],
   providers: [R2Service, ConfigService],
 })
 export class AppModule {}

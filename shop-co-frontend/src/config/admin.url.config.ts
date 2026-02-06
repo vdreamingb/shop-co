@@ -14,7 +14,7 @@ export const ADMIN_URL_CONFIG: IUrl[] = [
     {
         id: 3,
         name: "Product Details",
-        path: "/admin/productDetails"
+        path: "/admin/details"
     },
     {
         id: 4,
@@ -27,8 +27,13 @@ export const ADMIN_URL_CONFIG: IUrl[] = [
         path: "/admin/expediations"
     },
     {
-        id: 6,
-        name: "Reporsts",
-        path: "/admin/reports"
+        id: 7,
+        name: "ExpdiationItems",
+        path: "/admin/expediations/items"
+    },
+    {
+        id: 8,
+        name: "Reviews",
+        path: "/admin/reviews"
     }
 ]

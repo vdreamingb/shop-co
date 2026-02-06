@@ -1,0 +1,30 @@
+import api from "@/config/axios.config";
+import { ICreateProduct, IProduct } from "@/shared/types/product.types";
+
+class ProductsSercice {
+    async getAllProducts():Promise<IProduct[] | any[]> {
+        try {
+            const res = await api.get("products/all");
+            return res.data;
+        } catch (error) {
+            alert("Error fetching products");
+            return [];
+        }
+    }
+
+    async createProduct(data:ICreateProduct){
+        try {
+            const formData = new FormData()
+            formData.append("name", data.name)
+            formData.append("description", data.description ?? "")
+            formData.append("price", data.price.toString())
+            formData.append("brand", data.brand ?? "")
+            formData.append("image", data.image)
+            await api.post("products/create", formData)
+        } catch (error) {
+            alert("Error creating products")
+        }        
+    }
+}
+
+export const productsService = new ProductsSercice();

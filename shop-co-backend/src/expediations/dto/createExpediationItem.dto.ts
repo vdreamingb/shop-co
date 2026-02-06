@@ -10,4 +10,7 @@ export class CreateExpediationItemDto{
 
     @IsNumber()
     unitPrice: number
+
+    @IsNumber()
+    detailsId: number
 }

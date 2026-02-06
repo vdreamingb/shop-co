@@ -25,8 +25,9 @@ export class AuthController {
   @ApiOperation({ summary: 'Logout a user' })
   @UseGuards(JwtGuard)
   @Post('logout')
-  async logout(@Body('refreshToken') refreshToken: string){
-    await this.authService.logout(refreshToken)
+  async logout(@Req() req: Request, @Res({passthrough:true}) res: Response){
+    const refreshToken = req.cookies["refreshToken"]
+    await this.authService.logout(refreshToken, res)
     return {
       loggedOut: true
     }
@@ -36,7 +37,6 @@ export class AuthController {
   @Post('refresh')
   async refresh(@Req() req:Request, @Res({passthrough:true}) res: Response){
     const refreshToken = req.cookies["refreshToken"]
-    console.log(refreshToken)
     return await this.authService.refresh(refreshToken, res)
   }
 

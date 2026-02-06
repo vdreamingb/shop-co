@@ -83,6 +83,7 @@ model ProductDetails{
   stock Int
   pricePercent Float
   product Product @relation(fields: [productId], references: [id])
+  expeditionItems ExpeditionItem[]
 }
 
 // expediations
@@ -106,9 +107,10 @@ model ExpeditionItem {
 
   quantity       Int
   unitPrice      Float
-
+  detailsId      Int
   expediation    Expediations @relation(fields: [expediationId], references: [id])
   product        Product     @relation(fields: [productId], references: [id])
+  detail ProductDetails @relation(fields: [detailsId], references: [id])
 
   @@unique([expediationId, productId])
 }

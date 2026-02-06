@@ -120,21 +120,21 @@ export class AuthService {
       },
     });
 
-    res.clearCookie("accessToken")
+    res.clearCookie("accessToken");
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: false,
       maxAge: 1000 * 60 * 7,
       sameSite: "lax",
-      path: "/"
+      path: "/",
     });
-    res.clearCookie("refreshToken")
+    res.clearCookie("refreshToken");
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,
       maxAge: 1000 * 60 * 60 * 24 * 30,
       sameSite: "lax",
-      path: "/"
+      path: "/",
     });
 
     return { message: "Tokens generated successfully" };
@@ -217,7 +217,7 @@ export class AuthService {
     return this.issueTokens(userId, res);
   }
 
-  async logout(refreshToken: string) {
+  async logout(refreshToken: string, res: Response) {
     this.logger.log("Logging out user");
     let payload: any;
     try {
@@ -240,6 +240,8 @@ export class AuthService {
       data: { jti: refreshToken, expiresAt: expiry },
     });
     const userId = payload.sub;
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
     await this.prisma.refreshToken.deleteMany({ where: { userId } });
   }
 
@@ -295,6 +297,7 @@ export class AuthService {
         firstName: user.firstName,
         lastName: user.lastName,
         phoneNumber: user.phoneNumber,
+        role: user.role,
       };
     } catch (error) {
       this.logger.warn(error.message);
@@ -302,15 +305,18 @@ export class AuthService {
     }
   }
 
-  async checkLogged(req: Request){
-    this.logger.log("Check if user is logged in")
+  async checkLogged(req: Request) {
+    this.logger.log("Check if user is logged in");
     try {
-      const accessToken = req.cookies["accessToken"]
-      if(!accessToken){
-        return {message: "Expired"}
+      const accessToken = req.cookies["accessToken"];
+      if (!accessToken) {
+        this.logger.warn("No access token provided");
+        return { message: "Expired" };
       }
+      this.logger.log("User logged in");
+      return { message: "Logged in" };
     } catch (error) {
-      this.handleError(error)    
+      this.handleError(error);
     }
   }
 }

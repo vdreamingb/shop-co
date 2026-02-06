@@ -11,10 +11,10 @@ export default function LoginForm(){
     const {register, handleSubmit, formState: { errors }} = useForm<ILogIn>()
     
     const onSubmit: SubmitHandler<ILogIn> = async (data) => {
-        // const res = await authService.login(data.email, data.password)
-        // if(res === 200){
-        //     redirect("/admin")
-        // }
+        const res = await authService.login(data.email, data.password)
+        if(res === 200){
+            redirect("/admin")
+        }
     }
     
     return <form onSubmit={handleSubmit(onSubmit)} className="mt-9 text-center flex items-center flex-col gap-4">
