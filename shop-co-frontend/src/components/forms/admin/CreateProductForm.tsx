@@ -24,6 +24,7 @@ export default function CreateProductForm({setIsOpen}:Props): React.JSX.Element{
 
     const onSubmit: SubmitHandler<ICreateProduct> = async (data) => {
         mutation.mutate(data)
+        setIsOpen(false)
     }
 
     return <form onSubmit={handleSubmit(onSubmit)}>
@@ -39,7 +40,7 @@ export default function CreateProductForm({setIsOpen}:Props): React.JSX.Element{
         <div className="flex items-center justify-between">
             <div className="relative mb-5 mt-2 flex items-center justify-center max-w-10 cursor-pointer bg-black rounded-full">
                 <Image className="absolute" src="/img/plus.svg" alt="" width={20} height={20}/>
-                <input type="file" name="image" id="" className=" w-10 bg-transparent z-30 h-10 text-transparent    cursor-pointer" />
+                <input type="file" {...register("image")} id="" className=" w-10 bg-transparent z-30 h-10 text-transparent    cursor-pointer" />
             </div>
         </div>
         <button type="submit" className="submit-form ">Create</button>

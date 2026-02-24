@@ -14,5 +14,5 @@ export interface ICreateProduct{
     description?: string
     price: number
     brand?: string,
-    image: File 
+    image: FileList
 }

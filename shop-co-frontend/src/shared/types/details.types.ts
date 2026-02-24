@@ -9,3 +9,14 @@ export interface IDetails{
     stock: number
     pricePercent: number
 }
+
+export interface ICreateDetails{
+    productId: number
+    color: string
+    size: string
+    gender: string
+    type?:string
+    style?: string
+    stock: number
+    pricePercent: number
+}

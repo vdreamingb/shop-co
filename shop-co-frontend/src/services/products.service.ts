@@ -19,7 +19,8 @@ class ProductsSercice {
             formData.append("description", data.description ?? "")
             formData.append("price", data.price.toString())
             formData.append("brand", data.brand ?? "")
-            formData.append("image", data.image)
+            formData.append("file", data.image[0])
+            console.log(data)
             await api.post("products/create", formData)
         } catch (error) {
             alert("Error creating products")
