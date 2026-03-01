@@ -31,7 +31,7 @@ model RefreshToken{
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
   revoked Boolean @default(false)
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model BlackListedToken{
@@ -66,7 +66,7 @@ model Sales{
   salesPercent Float
   saleDate DateTime @default(now())
   expiryDate DateTime
-  product Product @relation(fields: [productId], references: [id])
+  product Product @relation(fields: [productId], references: [id] ,onDelete: Cascade)
   
 }
 
@@ -82,7 +82,7 @@ model ProductDetails{
   style String?
   stock Int
   pricePercent Float
-  product Product @relation(fields: [productId], references: [id])
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   expeditionItems ExpeditionItem[]
 }
 
@@ -96,7 +96,7 @@ model Expediations{
   createdAt DateTime @default(now())
   status Boolean @default(false)
   cost Float
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   items ExpeditionItem[]
 }
 
@@ -108,9 +108,9 @@ model ExpeditionItem {
   quantity       Int
   unitPrice      Float
   detailsId      Int
-  expediation    Expediations @relation(fields: [expediationId], references: [id])
-  product        Product     @relation(fields: [productId], references: [id])
-  detail ProductDetails @relation(fields: [detailsId], references: [id])
+  expediation    Expediations @relation(fields: [expediationId], references: [id], onDelete: Cascade)
+  product        Product     @relation(fields: [productId], references: [id],onDelete: Cascade)
+  detail ProductDetails @relation(fields: [detailsId], references: [id], onDelete: Cascade)
 
   @@unique([expediationId, productId])
 }
@@ -126,6 +126,6 @@ model Review{
   comment String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user User @relation(fields: [userId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }

@@ -18,6 +18,6 @@ export default function AdminUsersDashboardPage():React.JSX.Element{
 
     return <div className="">
         <h3 className="text-2xl integral">Users Dashboard</h3>
-        <DataDisplay data={query.data ?? []} headers={USERTABLE_HEADERS} />
+        <DataDisplay data={query.data ?? []} headers={USERTABLE_HEADERS} queryName="users" deleteFunc={userService.deleteUser}  />
     </div>
 }
