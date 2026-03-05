@@ -34,6 +34,34 @@ class ProductsSercice {
       handleError(error);
     }
   }
+
+  async newArrivals(products: IProduct[]) {
+    return products
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      )
+      .slice(0, 8);
+  }
+
+  async getNewArrivals() {
+    try {
+      const res = await api.get("products/all");
+      const arrivals = this.newArrivals(res.data);
+      return arrivals;
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  async getTopSellings() {
+    try {
+      const res = await api.get("products/top-sellings");
+      return res.data;
+    } catch (error) {
+      handleError(error);
+    }
+  }
 }
 
 export const productsService = new ProductsSercice();

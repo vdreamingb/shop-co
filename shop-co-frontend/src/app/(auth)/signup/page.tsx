@@ -1,0 +1,5 @@
+export default function SignUpPage(){
+    return <>
+        <h1 className="integral font-medium text-4xl text-center">Sign up</h1>
+    </>
+}

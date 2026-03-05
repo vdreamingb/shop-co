@@ -7,9 +7,7 @@ import CreateDetailsForm from "@/components/forms/admin/CreateDetailsForm";
 import { DetailsTableHaders } from "@/config/detailsTableHeaders";
 import useModal from "@/custom-hooks/useModal.hook";
 import { detailsService } from "@/services/details.service";
-import { IDetails } from "@/shared/types/details.types";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 
 export default function AdminDetailsPage() {
   const query = useQuery({
@@ -26,6 +24,8 @@ export default function AdminDetailsPage() {
       <DataDisplay
         data={Array.isArray(query.data) ? query.data : []}
         headers={DetailsTableHaders}
+        deleteFunc={detailsService.deleteDetail}
+        queryName="details"
       />
       <CustomModal
         setIsOpen={setIsOpen}

@@ -6,6 +6,7 @@ import CustomModal from "@/components/CustomModal";
 import CreateSalesForm from "@/components/forms/admin/CreateSalesForm";
 import { SalesTableHeaders } from "@/config/salesTableHeaders";
 import useModal from "@/custom-hooks/useModal.hook";
+import { detailsService } from "@/services/details.service";
 import { salesService } from "@/services/sales.service";
 import { useQuery } from "@tanstack/react-query";
 
@@ -22,6 +23,8 @@ export default function SalesPage() {
       <DataDisplay
         data={Array.isArray(query.data) ? query.data : []}
         headers={SalesTableHeaders}
+        deleteFunc={salesService.deleteSale}
+        queryName="sales"
       />
       <CustomModal
         content={<CreateSalesForm setIsOpen={setIsOpen} />}

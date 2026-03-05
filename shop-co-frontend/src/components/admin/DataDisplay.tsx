@@ -4,6 +4,7 @@ import parseDate from "@/shared/utils/ParseDate";
 import { useState } from "react";
 import DeleteModal from "../deleteModal";
 import useModal from "@/custom-hooks/useModal.hook";
+import FormatDesc from "@/shared/utils/formatDesc";
 
 interface Props {
   data: any[];
@@ -54,7 +55,10 @@ export default function DataDisplay({
               className="border-b border-gray-200 hover:bg-gray-100"
             >
               {headers.map((header) => (
-                <td key={header.header} className="py-2 px-4">
+                <td
+                  key={header.header}
+                  className={`py-2 px-4 truncate line-clamp-n ${header.header === "description" ? "max-w-50" : ""}`}
+                >
                   {header.header === "createdAt" ||
                   header.header === "updatedAt" ||
                   header.header === "saleDate" ||
@@ -73,7 +77,7 @@ export default function DataDisplay({
                       className="text-red-600 cursor-pointer"
                       onClick={() => {
                         setDeleteId(item.id);
-                        setIsOpen(true)
+                        setIsOpen(true);
                       }}
                     >
                       Delete
