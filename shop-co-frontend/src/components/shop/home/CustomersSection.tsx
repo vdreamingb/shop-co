@@ -2,11 +2,12 @@
 
 import { customersData } from "@/shared/data/customers.data";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import CustomersReview from "./CustomersReview";
 import Image from "next/image";
 
 export default function CustomersSection(): React.JSX.Element {
+  const [maxIndex, setMaxIndex] = useState(0);
   const [index, setIndex] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -14,21 +15,27 @@ export default function CustomersSection(): React.JSX.Element {
   const totalCards = 7;
   const cardWidth = 420;
 
-  let maxIndex:number;
-  const width = ref.current?.offsetWidth;
 
-  if (width != undefined) {
-    if (width < 768 && width < 852) {
-      maxIndex = visibleCards;
-    } else if (
-      width > 852 &&
-      width < 1240
-    ) {
-      maxIndex = totalCards - 1;
+useEffect(() => {
+  const calculateMaxIndex = () => {
+    if (!ref.current) return;
+
+    const width = ref.current.offsetWidth;
+
+    if (width < 852) {
+      setMaxIndex(totalCards - 1);
+    } else if (width < 1240) {
+      setMaxIndex(totalCards - 2);
     } else {
-      maxIndex = totalCards - visibleCards;
+      setMaxIndex(totalCards - visibleCards);
     }
-  }
+  };
+
+  calculateMaxIndex();
+  window.addEventListener("resize", calculateMaxIndex);
+
+  return () => window.removeEventListener("resize", calculateMaxIndex);
+}, []);
 
   const handleLeft = () => {
     setIndex((prev) => Math.max(prev - 1, 0));
@@ -40,12 +47,12 @@ export default function CustomersSection(): React.JSX.Element {
   return (
     <section ref={ref} className="my-20">
       <div className="container mb-10 flex justify-between items-end max-md:flex-wrap">
-        <h3 className="text-left font-bold integral text-[48px]  ">
+        <h3 className="text-left font-bold integral text-[48px] max-md:text-[32px] ">
           Our Happy Customers
         </h3>
         <div className="shrink-0">
           <button
-            className="p-3 rounded-full cursor-pointer hover:bg-neutral-100 duration-300 ease-in-out"
+            className="p-3 rounded-full cursor-pointer hover:bg-neutral-100 duration-300 ease-in-out z-30"
             onClick={handleLeft}
           >
             <Image
@@ -56,7 +63,7 @@ export default function CustomersSection(): React.JSX.Element {
             />
           </button>
           <button
-            className="p-3 rounded-full cursor-pointer hover:bg-neutral-100 duration-300 ease-in-out"
+            className="p-3 rounded-full cursor-pointer hover:bg-neutral-100 duration-300 ease-in-out z-30"
             onClick={handleRight}
           >
             <Image

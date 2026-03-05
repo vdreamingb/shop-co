@@ -1,6 +1,7 @@
 import { IUser } from "@/shared/types/user.types";
 import axios from "axios";
 import api from "@/config/axios.config";
+import { handleError } from "@/shared/utils/handleError";
 
 class UserService {
   async getUsers(): Promise<IUser | any[]> {

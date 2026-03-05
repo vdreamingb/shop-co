@@ -13,8 +13,8 @@ const onClick = () => {
   }
 };
   return (
-    <section ref={ref} className="w-full bg-black h-9.5 py-2.5 text-white gap-3">
-      <div className="container justify-center flex relative gap-1.5">
+    <section ref={ref} className="w-full bg-black py-2.5 text-white gap-3">
+      <div className="container justify-center flex relative gap-1.5 max-sm:flex-wrap">
         <div className="text-sm tracking-wide">
           Sign up and get 20% off to your first order.
         </div>

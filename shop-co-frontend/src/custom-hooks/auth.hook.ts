@@ -35,7 +35,6 @@ export default function useAuthRefresh(){
                 }
                 finally{
                     refreshPromise = null;
-                    setIsReady(true);
                 }
             })();
         }

@@ -1,5 +1,6 @@
 import api from "@/config/axios.config";
 import { ICreateReviews, IReview } from "@/shared/types/reviews.types";
+import { handleError } from "@/shared/utils/handleError";
 
 class ReviewsService {
   async getAll(): Promise<IReview[] | []> {

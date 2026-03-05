@@ -6,7 +6,7 @@ export default function HeroSection() {
     <section className="w-full bg-hero bg-cover bg-no-repeat bg-center min-h-158.25 pt-25.75 pb-29">
       <div className="container ">
         <div className="max-w-144.25 mb-12">
-          <h1 className="integral font-bold text-[64px] text-black  leading-none max-lg:text-center">
+          <h1 className="integral font-bold text-[64px] text-black  leading-none max-lg:text-center max-md:text-[46px]">
             FIND CLOTHES THAT MATCHES YOUR STYLE
           </h1>
           <p className="text-black opacity-60 my-8 max-lg:text-center">

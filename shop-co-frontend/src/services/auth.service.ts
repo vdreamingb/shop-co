@@ -1,4 +1,7 @@
+import { ISignUp } from "@/shared/types/signup.type";
 import axios from "axios";
+import { handleError } from "@/shared/utils/handleError";
+import api from "@/config/axios.config";
 
 class AuthService{
     async login(email: string, password: string){
@@ -9,10 +12,7 @@ class AuthService{
             }, {withCredentials:true})
             return response.status
         } catch (error) {
-            if(error instanceof Error){
-                alert(error.message)
-            }
-            alert("Unknown error occured")
+            handleError(error)
         }
     }
 
@@ -31,7 +31,7 @@ class AuthService{
             const res = await axios.get("http://localhost:1110/api/auth/logged", {withCredentials: true})
             return res.data
         } catch (error) {
-            console.error(error)
+            handleError(error)
         }
     }
 
@@ -40,7 +40,7 @@ class AuthService{
             const res = await axios.get("http://localhost:1110/api/auth/whoami", {withCredentials: true})
             return res.data
         } catch (error) {
-            console.error(error)
+            handleError(error)
         }
     }
 
@@ -49,7 +49,16 @@ class AuthService{
             const res = await axios.post("http://localhost:1110/api/auth/logout", {}, {withCredentials: true})
             return res.status
         } catch (error) {
-            console.error(error)
+            handleError(error);
+        }
+    }
+
+    async signup(data:ISignUp){
+        try {
+            const res = await api.post("auth/register", {data})
+            return res.status
+        } catch (error) {
+            handleError(error);
         }
     }
 }

@@ -6,11 +6,11 @@ import Image from "next/image";
 export default function Header() {
   return (
     <header className="w-full py-6 ">
-      <div className="container flex justify-between items-center gap-10">
+      <div className="container flex justify-between items-center gap-10 max-md:gap-3">
         <Link href="/" className="uppercase font-bold text-[32px] integral max-md:order-2">
           Shop.co
         </Link>
-        <nav className="p-0 m-0 max-md:order-1 max-md:fixed max-md:top-[200%] shrink-0">
+        <nav className="p-0 m-0 max-md:order-1 max-md:fixed max-md:top-[200%] max-md:block max-md:w-full max-md:h-[calc(100%-96px)] shrink-0">
           <ul className="flex items-center gap-6 ">
             {shopLink.map((link) => (
               <li className="p-0 m-0" key={link.id}>

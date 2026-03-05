@@ -1,6 +1,4 @@
 "use client"
-
-import loginAction from "@/actions/login.action"
 import { ILogIn } from "@/shared/types/login.type"
 import { useForm } from "react-hook-form"
 import type { SubmitHandler } from "react-hook-form"

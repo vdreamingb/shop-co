@@ -1,4 +1,4 @@
-function handleError(error: unknown) {
+export function handleError(error: unknown) {
   if (error instanceof Error) {
     alert(error.message);
   } else {

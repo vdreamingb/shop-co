@@ -1,6 +1,7 @@
 import api from "@/config/axios.config";
 import { ICreateDetails } from "@/shared/types/details.types";
 import { ICreateSales, ISales } from "@/shared/types/sales.types";
+import { handleError } from "@/shared/utils/handleError";
 
 class SalesService {
   async getAll(): Promise<ISales | []> {
