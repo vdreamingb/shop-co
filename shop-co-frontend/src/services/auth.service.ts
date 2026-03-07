@@ -41,6 +41,7 @@ class AuthService{
             return res.data
         } catch (error) {
             handleError(error)
+            throw new Error("User not authenticated");
         }
     }
 

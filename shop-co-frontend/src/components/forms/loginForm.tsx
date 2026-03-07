@@ -10,8 +10,8 @@ export default function LoginForm(){
     
     const onSubmit: SubmitHandler<ILogIn> = async (data) => {
         const res = await authService.login(data.email, data.password)
-        if(res === 200){
-            redirect("/admin")
+        if(res === 200 || res === 201){
+            redirect("/profile")
         }
     }
     
