@@ -13,7 +13,7 @@ export class ReviewsController {
 
   @UseGuards(JwtGuard)
   @Post('create')
-  async createReview(@Body() createReviewDto: CreateReviewDto, @Req() req: Request, @CurrentUser() user,) {
+  async createReview(@Body() createReviewDto: CreateReviewDto, @Req() req: Request, @CurrentUser() user) {
     return this.reviewsService.createReview(createReviewDto, user.userId);
   }
 
@@ -52,5 +52,11 @@ export class ReviewsController {
   @Delete('delete/:id')
   async deleteReview(@Param('id', ParseIntPipe) id: number) {
     return this.reviewsService.deleteReview(id);
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('user')
+  async getReviewsByUserId(@CurrentUser() user) {
+    return this.reviewsService.getByUserId(user.userId);
   }
 }

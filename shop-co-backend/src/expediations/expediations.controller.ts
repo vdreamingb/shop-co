@@ -5,6 +5,7 @@ import { RolesGuard } from 'src/common/guards/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { RoleEnum } from 'src/common/enums/roles.enum';
 import { CreateExpediationsDto } from './dto/createExped.dto';
+import { CurrentUser } from 'src/common/decorators/currentUser.decorator';
 
 @Controller('expediations')
 export class ExpediationsController {
@@ -40,5 +41,11 @@ export class ExpediationsController {
   @Patch('modifyStatus/:id')
   async modifyStatus(@Param('id', ParseIntPipe) id: number, @Body() body: {status: boolean}) {
     return this.expediationsService.modifyStatus(id, body.status)
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('user')
+  async getExpediationsByUser(@CurrentUser() user) {
+    return this.expediationsService.getExpediationsByUserId(user.userId);
   }
 }

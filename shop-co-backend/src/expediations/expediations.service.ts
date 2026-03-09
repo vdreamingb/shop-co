@@ -108,4 +108,12 @@ export class ExpediationsService {
             this.handleError(error)
         }
     }
+
+    async getExpediationsByUserId(userId: number){
+        return this.prismaService.expediations.findMany({
+            where: {
+                userId
+            }
+        });
+    }
 }

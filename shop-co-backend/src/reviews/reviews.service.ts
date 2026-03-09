@@ -97,4 +97,12 @@ export class ReviewsService {
             }
         });
     }
+    async getByUserId(userId: number){
+        this.logger.log("Fetching reviews by user ID");
+        return this.prismaService.review.findMany({
+            where: {
+                userId
+            }
+        });
+    }
 }
