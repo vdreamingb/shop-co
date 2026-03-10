@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import type { SubmitHandler } from "react-hook-form"
 import { redirect } from "next/navigation"
 import { authService } from "@/services/auth.service"
+import Link from "next/link"
 
 export default function SignUpForm() {
   const {
@@ -17,7 +18,7 @@ export default function SignUpForm() {
     const res = await authService.signup(data)
 
     if (res === 201 || res === 200) {
-      redirect("/admin")
+      redirect("/profile")
     }
   }
 
@@ -26,7 +27,6 @@ export default function SignUpForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="mt-9 text-center flex items-center flex-col gap-4"
     >
-      {/* Email */}
       <input
         type="email"
         {...register("email", {
@@ -40,8 +40,6 @@ export default function SignUpForm() {
       {errors.email && (
         <p className="text-red-500">Email is not valid.</p>
       )}
-
-      {/* First Name */}
       <input
         type="text"
         {...register("firstName", { required: true, minLength: 2 })}
@@ -52,7 +50,6 @@ export default function SignUpForm() {
         <p className="text-red-500">First name must be at least 2 characters.</p>
       )}
 
-      {/* Last Name */}
       <input
         type="text"
         {...register("lastName", { required: true, minLength: 2 })}
@@ -63,7 +60,6 @@ export default function SignUpForm() {
         <p className="text-red-500">Last name must be at least 2 characters.</p>
       )}
 
-      {/* Phone Number */}
       <input
         type="tel"
         {...register("phoneNumber", {
@@ -77,7 +73,6 @@ export default function SignUpForm() {
         <p className="text-red-500">Phone number is not valid.</p>
       )}
 
-      {/* Password */}
       <input
         type="password"
         {...register("password", {
@@ -99,6 +94,7 @@ export default function SignUpForm() {
       >
         Sign Up
       </button>
+      <Link href="/login">Already have an account? Log in</Link>
     </form>
   )
 }

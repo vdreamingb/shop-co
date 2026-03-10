@@ -2,6 +2,9 @@
 import React from "react";
 import { IReview } from "@/shared/types/reviews.types";
 import Image from "next/image";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { reviewsService } from "@/services/reviews.service";
+import parseDate from "@/shared/utils/ParseDate";
 
 interface MyReviewsProps {
   reviews: IReview[];
@@ -17,14 +20,29 @@ function StarRating({ rating }: { rating: number }) {
           key={star}
           className={`text-sm ${star <= rating ? "text-[#c8a84b]" : "text-[#ddd]"}`}
         >
-          <Image />
+          <Image src={"/img/full-star.png"} alt="Star" width={22.58} height={22.58} />
         </span>
       ))}
     </div>
   );
 }
 
-export default function MyReviews({ reviews, onDelete, deletingId }: MyReviewsProps): React.JSX.Element {
+export default function MyReviews(): React.JSX.Element {
+  const { data: reviews = [], isLoading: revLoading } = useQuery({
+    queryKey: ["reviews"],
+    queryFn: () => reviewsService.getAll(),
+  });
+
+  const queryClient = useQueryClient();
+
+  const deleteReviewMutation = useMutation({
+    mutationFn: (id: number) => reviewsService.deleteReview(id),
+    onSuccess: (_, id) => {
+      queryClient.setQueryData<typeof reviews>(["reviews"], (prev = []) =>
+        prev.filter((r) => r.id !== id),
+      );
+    },
+  });
   return (
     <div className="p-8 md:p-10">
       <div className="border-b-2 border-[#1a1a1a] pb-4 mb-8">
@@ -66,29 +84,25 @@ export default function MyReviews({ reviews, onDelete, deletingId }: MyReviewsPr
                   )}
                   {review.createdAt && (
                     <p className="text-[10px] text-[#aaa] tracking-widest uppercase mt-3">
-                      {new Date(review.createdAt).toLocaleDateString("en-US", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
+                      {parseDate(review.createdAt)}
                     </p>
                   )}
                 </div>
 
                 <button
-                  onClick={() => onDelete(review.id)}
-                  disabled={deletingId === review.id}
+                  onClick={() => deleteReviewMutation.mutateAsync(review.id)}
+                  disabled={deleteReviewMutation.isPending}
                   className={`
                     shrink-0 text-[10px] tracking-widest uppercase px-3 py-1.5 border cursor-pointer
                     transition-all duration-200
                     ${
-                      deletingId === review.id
+                      deleteReviewMutation.variables === review.id
                         ? "border-[#ccc] text-[#ccc] cursor-not-allowed"
                         : "border-[#c0392b] text-[#c0392b] hover:bg-[#c0392b] hover:text-white opacity-0 group-hover:opacity-100"
                     }
                   `}
                 >
-                  {deletingId === review.id ? "Deleting…" : "Delete"}
+                  {deleteReviewMutation.variables === review.id ? "Deleting…" : "Delete"}
                 </button>
               </div>
             </div>

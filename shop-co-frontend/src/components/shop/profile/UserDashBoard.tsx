@@ -18,8 +18,6 @@ const tabs: { id: Tab; label: string }[] = [
 
 export default function UserDashboard(): React.JSX.Element {
   const [activeTab, setActiveTab] = useState<Tab>("profile");
-  const queryClient = useQueryClient();
-
   const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ["whoami"],
     queryFn: () => authService.whoamI(),
@@ -27,20 +25,7 @@ export default function UserDashboard(): React.JSX.Element {
 
 
 
-  const { data: reviews = [], isLoading: revLoading } = useQuery({
-    queryKey: ["reviews"],
-    queryFn: () => reviewsService.getAll(),
-    enabled: activeTab === "reviews",
-  });
-
-  const deleteReviewMutation = useMutation({
-    mutationFn: (id: number) => reviewsService.deleteReview(id),
-    onSuccess: (_, id) => {
-      queryClient.setQueryData<typeof reviews>(["reviews"], (prev = []) =>
-        prev.filter((r) => r.id !== id),
-      );
-    },
-  });
+  
 
   return (
     <div className="min-h-screen bg-white ">
@@ -80,13 +65,6 @@ export default function UserDashboard(): React.JSX.Element {
           )}
           {activeTab === "reviews" && (
             <MyReviews
-              reviews={reviews}
-              onDelete={(id) => deleteReviewMutation.mutateAsync(id)}
-              deletingId={
-                deleteReviewMutation.isPending
-                  ? (deleteReviewMutation.variables ?? null)
-                  : null
-              }
             />
           )}
         </main>

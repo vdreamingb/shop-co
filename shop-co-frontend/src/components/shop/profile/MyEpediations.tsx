@@ -32,7 +32,6 @@ export default function MyExpediations(): React.JSX.Element {
 
   return (
     <div className="p-8 md:p-10">
-      {/* Header */}
       <div className="border-b-2 border-[#1a1a1a] pb-4 mb-8">
         <p className="text-xs tracking-[0.3em] uppercase text-[#888] mb-1">
           History
@@ -47,7 +46,6 @@ export default function MyExpediations(): React.JSX.Element {
         </div>
       </div>
 
-      {/* Empty state */}
       {expediations.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 gap-4">
           <p className="text-[#888] text-sm tracking-widest uppercase">

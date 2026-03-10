@@ -19,7 +19,6 @@ export default function ProfileInfo({ user }: ProfileInfoProps): React.JSX.Eleme
 
   return (
     <div className="p-8 md:p-10">
-      {/* Section header */}
       <div className="flex items-end justify-between border-b-2 border-[#1a1a1a] pb-4 mb-8">
         <div>
           <p className="text-xs tracking-[0.3em] uppercase text-[#888] mb-1">Account</p>
@@ -31,8 +30,6 @@ export default function ProfileInfo({ user }: ProfileInfoProps): React.JSX.Eleme
           {user.role}
         </span>
       </div>
-
-      {/* Avatar placeholder */}
       <div className="flex items-center gap-6 mb-8">
         <div className="w-16 h-16 bg-[#1a1a1a] text-[#f5f0e8] flex items-center justify-center text-xl font-light shrink-0">
           {user.firstName?.[0]}{user.lastName?.[0]}
@@ -43,7 +40,6 @@ export default function ProfileInfo({ user }: ProfileInfoProps): React.JSX.Eleme
         </div>
       </div>
 
-      {/* Fields */}
       <div>
         <Field label="First Name" value={user.firstName} />
         <Field label="Last Name" value={user.lastName} />

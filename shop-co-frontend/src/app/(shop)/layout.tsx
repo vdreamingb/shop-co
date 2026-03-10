@@ -17,6 +17,9 @@ export default function ShopLayout({
     <>
       <SalesMessage />
       <Header />
+      <div className="container bg-black opacity-10">
+        <hr />
+      </div>
       <main className="">{children}</main>
       <NewsletterSubscribe />
       <Footer />

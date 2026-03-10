@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form"
 import type { SubmitHandler } from "react-hook-form"
 import { redirect } from "next/navigation"
 import { authService } from "@/services/auth.service"
+import Link from "next/link"
 
 export default function LoginForm(){
     const {register, handleSubmit, formState: { errors }} = useForm<ILogIn>()
@@ -23,5 +24,7 @@ export default function LoginForm(){
         <button className="bg-black px-16 text-white py-2 rounded-2xl block text-lg hover:bg-neutral-800 cursor-pointer duration-300 ease-in-out font-medium" type="submit">
             Log In
         </button>
+
+        <Link href="/signup">Don't have an account? Sign up</Link>
     </form>
 }
