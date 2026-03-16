@@ -6,7 +6,7 @@ import { handleError } from "@/shared/utils/handleError";
 class UserService {
   async getUsers(): Promise<IUser | any[]> {
     try {
-      const res = await axios.get("https://shop-co-pi-nine.vercel.app/api/users", {
+      const res = await axios.get("http://localhost:1110/api/users", {
         withCredentials: true,
       });
       const data = res.data;
