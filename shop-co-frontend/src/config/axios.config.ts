@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://localhost:1110/api/",
+    baseURL: "https://shop-co-pi-nine.vercel.app/api/",
     timeout: 10000,
     withCredentials: true,
 })
