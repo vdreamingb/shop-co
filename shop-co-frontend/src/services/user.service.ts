@@ -6,13 +6,16 @@ import { handleError } from "@/shared/utils/handleError";
 class UserService {
   async getUsers(): Promise<IUser | any[]> {
     try {
-      const res = await axios.get("https://shop-co-pi-nine.vercel.app/api/users", {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        "https://shop-co-botr.onrender.com/api/users",
+        {
+          withCredentials: true,
+        },
+      );
       const data = res.data;
       return data;
     } catch (error) {
-      handleError(error)
+      handleError(error);
       return [];
     }
   }
@@ -21,16 +24,16 @@ class UserService {
     try {
       await api.delete(`users/delete/${id}`);
     } catch (error) {
-      handleError(error)
+      handleError(error);
     }
   }
   async getUserById(id: number): Promise<IUser | null> {
     try {
       const res = await api.get(`users/${id}`);
-      console.log(res.data)
+      console.log(res.data);
       return res.data;
     } catch (error) {
-      handleError(error)
+      handleError(error);
       return null;
     }
   }

@@ -6,7 +6,7 @@ import api from "@/config/axios.config";
 class AuthService{
     async login(email: string, password: string){
         try {
-            const response = await axios.post("https://shop-co-pi-nine.vercel.app/api/auth/login", {
+            const response = await axios.post("https://shop-co-botr.onrender.com/api/auth/login", {
                 email,
                 password
             }, {withCredentials:true})
@@ -18,7 +18,7 @@ class AuthService{
 
     async refresh(){
         try{
-            const res = await axios.post("https://shop-co-pi-nine.vercel.app/api/auth/refresh",{},{ withCredentials: true })
+            const res = await axios.post("https://shop-co-botr.onrender.com/api/auth/refresh",{},{ withCredentials: true })
             return res.status
         }
         catch(error){
@@ -28,7 +28,7 @@ class AuthService{
 
     async loggedIn(){
         try {
-            const res = await axios.get("https://shop-co-pi-nine.vercel.app/api/auth/logged", {withCredentials: true})
+            const res = await axios.get("https://shop-co-botr.onrender.com/api/auth/logged", {withCredentials: true})
             return res.data
         } catch (error) {
             handleError(error)
@@ -37,7 +37,7 @@ class AuthService{
 
     async whoamI(){
         try {
-            const res = await axios.get("https://shop-co-pi-nine.vercel.app/api/auth/whoami", {withCredentials: true})
+            const res = await axios.get("https://shop-co-botr.onrender.com/api/auth/whoami", {withCredentials: true})
             return res.data
         } catch (error) {
             handleError(error)
@@ -47,7 +47,7 @@ class AuthService{
 
     async logout(){
         try {
-            const res = await axios.post("https://shop-co-pi-nine.vercel.app/api/auth/logout", {}, {withCredentials: true})
+            const res = await axios.post("https://shop-co-botr.onrender.com/api/auth/logout", {}, {withCredentials: true})
             return res.status
         } catch (error) {
             handleError(error);
