@@ -35,6 +35,16 @@ class SalesService {
       handleError(error);
     }
   }
+
+  async getPriceWithSale(productId: number): Promise<number> {
+    try {
+      const res = await api.get(`sales/${productId}`);
+      return res.data
+    } catch (error) {
+      handleError(error);
+      return 0;
+    }
+  }
 }
 
 export const salesService = new SalesService();

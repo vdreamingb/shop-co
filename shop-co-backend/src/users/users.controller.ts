@@ -25,8 +25,6 @@ export class UsersController {
     return this.usersService.findByEmail(body.email);
   }
 
-  @UseGuards(JwtGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN)
   @Get(":id")
   async getUserById(@Param("id", ParseIntPipe) id: number) {
     return this.usersService.findById(id);

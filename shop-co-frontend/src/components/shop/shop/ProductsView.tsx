@@ -17,7 +17,6 @@ export default function ProductsView({ data }: Props): React.JSX.Element {
               name={product.name}
               price={String(product.price)}
               imageUrl={product.imageUrl}
-              rating={Math.floor(Math.random() * (5 - 3 + 1)) + 3}
             />
           </li>
         ))}

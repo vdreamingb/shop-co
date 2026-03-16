@@ -38,7 +38,6 @@ export default function Arrivals(): React.JSX.Element {
                 <ProductCard
                   id={product.id}
                   imageUrl={product.imageUrl}
-                  rating={Math.floor(Math.random() * (5 - 3 + 1)) + 3}
                   name={product.name}
                   price={String(product.price)}
                 />

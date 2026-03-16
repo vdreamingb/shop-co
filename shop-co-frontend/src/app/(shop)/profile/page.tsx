@@ -8,12 +8,6 @@ import { redirect } from "next/navigation";
 export default function ProfilePage() {
   const ready = useAuthRefresh();
 
-  useEffect(() => {
-    if (ready === false) {
-      redirect("/");
-    }
-  }, [ready]);
-
   if (ready === null || ready === undefined) {
     return (
       <div className="flex h-screen items-center justify-center bg-white">

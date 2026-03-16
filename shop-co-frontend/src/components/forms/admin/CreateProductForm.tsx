@@ -35,7 +35,7 @@ export default function CreateProductForm({setIsOpen}:Props): React.JSX.Element{
         <label className="form-label" htmlFor="price">Price</label>
         <input className="form-input mb-5 mt-2" type="number" placeholder="500" {...register("price", {required: true})}/>
         <label className="form-label" htmlFor="brand">Brand</label>
-        <input type="text" className="form-input mb-5 mt-2" placeholder="Nike" />
+        <input type="text" className="form-input mb-5 mt-2" placeholder="Nike"  {...register("brand")}/>
         <label className="form-label" htmlFor="image">Image</label>
         <div className="flex items-center justify-between">
             <div className="relative mb-5 mt-2 flex items-center justify-center max-w-10 cursor-pointer bg-black rounded-full">

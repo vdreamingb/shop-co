@@ -1,5 +1,6 @@
 import api from "@/config/axios.config";
 import { ICreateProduct, IProduct } from "@/shared/types/product.types";
+import { handleError } from "@/shared/utils/handleError";
 
 class ProductsSercice {
   async getAllProducts(): Promise<IProduct[] | any[]> {
@@ -60,6 +61,34 @@ class ProductsSercice {
       return res.data;
     } catch (error) {
       handleError(error);
+    }
+  }
+
+  async getBrands():Promise<{brand: string, products: IProduct[]}[] | []> {
+    try {
+      const res = await api.get("products/all")
+      const data = res.data as IProduct[];
+      const brandsList = Array.from(new Set(data.map((product) => product.brand)));
+      const brands = brandsList.map((brand) => {
+        return {
+          brand,
+          products: data.filter((product) => product.brand === brand)
+        }
+      })
+      return brands;
+    } catch (error) {
+      handleError(error);
+      return []
+    }
+  }
+
+  async getProductById(id: number): Promise<IProduct | null> {
+    try {
+      const res = await api.get(`products/${id}`);
+      return res.data;
+    } catch (error) {
+      handleError(error);
+      return null;
     }
   }
 }

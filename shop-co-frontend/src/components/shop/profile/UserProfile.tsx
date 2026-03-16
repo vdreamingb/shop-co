@@ -20,7 +20,7 @@ export default function UserProfile(): React.JSX.Element {
   };
 
   return (
-    <section className="flex flex-col flex-1">
+    <section className="flex flex-col flex-1 pt-6">
       <div className="container flex flex-col pb-10 h-full relative min-h-120">
 
         <div className="flex justify-between items-center border-b-8 border-black pb-5">

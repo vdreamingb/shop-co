@@ -3,10 +3,10 @@ import { HistoryProvider } from "@/shared/contexts/HistoryContext";
 import History from "@/components/shop/shop/History";
 import { Metadata } from "next";
 
-const metadata: Metadata = {
+export const metadata: Metadata = {
   title: "Shop.co - Shop",
   description: "Discovers the best clothes for you and your style",
-}
+};
 
 export default function ShopLayout({
   children,

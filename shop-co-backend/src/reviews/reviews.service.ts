@@ -58,7 +58,7 @@ export class ReviewsService {
                 rating: true
             }
         });
-        return result._avg.rating;
+        return result._avg.rating?result._avg.rating:0;
     }
 
     async deleteReview(id: number){

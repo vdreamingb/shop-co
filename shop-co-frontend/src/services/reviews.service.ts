@@ -16,10 +16,13 @@ class ReviewsService {
     }
   }
 
-  async createReview(data: ICreateReviews) {
+  async createReview(
+    data: Omit<ICreateReviews, "productId">,
+    productId: number,
+  ) {
     try {
       await api.post("reviews/create", {
-        productId: Number(data.productId),
+        productId: Number(productId),
         rating: Number(data.rating),
         comment: data.comment,
       });
@@ -39,6 +42,25 @@ class ReviewsService {
       handleError(error);
     }
   }
-}
 
+  async getAverageRating(productId: number) {
+    try {
+      const res = await api.get(`reviews/product/${productId}/average-rating`);
+      return res.data;
+    } catch (error) {
+      handleError(error);
+      return 0;
+    }
+  }
+
+  async getReviewsByProductId(productId: number): Promise<IReview[] | []> {
+    try {
+      const res = await api.get(`reviews/product/${productId}`);
+      return res.data;
+    } catch (error) {
+      handleError(error);
+      return [];
+    }
+  }
+}
 export const reviewsService = new ReviewsService();

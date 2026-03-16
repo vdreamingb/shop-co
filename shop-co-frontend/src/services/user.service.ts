@@ -24,6 +24,16 @@ class UserService {
       handleError(error)
     }
   }
+  async getUserById(id: number): Promise<IUser | null> {
+    try {
+      const res = await api.get(`users/${id}`);
+      console.log(res.data)
+      return res.data;
+    } catch (error) {
+      handleError(error)
+      return null;
+    }
+  }
 }
 
 export const userService = new UserService();
