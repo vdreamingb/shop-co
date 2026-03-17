@@ -6,12 +6,7 @@ import { handleError } from "@/shared/utils/handleError";
 class UserService {
   async getUsers(): Promise<IUser | any[]> {
     try {
-      const res = await axios.get(
-        "https://shop-co-botr.onrender.com/api/users",
-        {
-          withCredentials: true,
-        },
-      );
+      const res = await api.get("users")
       const data = res.data;
       return data;
     } catch (error) {

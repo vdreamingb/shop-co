@@ -1,45 +1,35 @@
-"use client"
-import { useState, useEffect } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import { authService } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 
-let refreshPromise: Promise<void> | null = null;
+export default function useAuth() {
+  const [loading, setLoading] = useState(true);
+  const [isAuth, setIsAuth] = useState(false);
+  const router = useRouter();
 
-export default function useAuthRefresh() {
-    const [ready, setIsReady] = useState<boolean | null>(null);
-    const router = useRouter();
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await authService.loggedIn();
 
-    useEffect(() => {
-        if (!refreshPromise) {
-            refreshPromise = (async () => {
-                try {
-                    const res = await authService.loggedIn();
-                    
-                    if (res?.message === "Logged in") {
-                        setIsReady(true);
-                    } 
-                    else if (res?.message === "Expired") {
-                        const refreshRes = await authService.refresh();
-                        if (refreshRes === 200) {
-                            setIsReady(true);
-                        } else {
-                            setIsReady(false);
-                            router.push("/");
-                        }
-                    } else {
-                        setIsReady(false);
-                        router.push("/");
-                    }
-                } catch (error) {
-                    console.error("Error during auth refresh:", error);
-                    setIsReady(false);
-                    router.push("/");
-                } finally {
-                    refreshPromise = null;
-                }
-            })();
+        if (res?.message === "Logged in") {
+          setIsAuth(true);
+        } else {
+          setIsAuth(false);
+          router.push("/");
         }
-    }, [router]);
+      } catch (error) {
+        setIsAuth(false);
+        router.push("/");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    return ready;
+    checkAuth();
+  }, [router]);
+
+  return { loading, isAuth };
 }

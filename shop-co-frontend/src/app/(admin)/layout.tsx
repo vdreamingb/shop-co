@@ -6,6 +6,7 @@ import AdminMain from "@/components/admin/Main";
 import useAuthRefresh from "@/custom-hooks/auth.hook";
 import checkAdmin from "@/custom-hooks/admin.hook";
 import { useEffect, useState } from "react";
+import useAuth from "@/custom-hooks/auth.hook";
 
 export default function AdminLayout({
   children,
@@ -13,39 +14,38 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const [userIsAdmin, setUserIsAdmin] = useState<boolean>(false);
-  const ready = useAuthRefresh();
+  const { loading, isAuth } = useAuth();
 
   useEffect(() => {
     let verifyAdmin = () => {};
-    if(ready){
+    if (isAuth) {
       verifyAdmin = async () => {
         const isAdmin = await checkAdmin();
-        if(isAdmin){
+        if (isAdmin) {
           setUserIsAdmin(isAdmin);
         }
-      }
+      };
     }
     verifyAdmin();
-  },[ready])
+  }, [isAuth]);
 
-  if (!ready) {
+  if (loading) {
     return <div>Loading...</div>;
   }
-  
-  if(!userIsAdmin){
-    return <div>Access Denied. You do not have permission to view this page.</div>;
-  }
 
-  
-
-  if(userIsAdmin){
+  if (!userIsAdmin) {
     return (
-    <>
-      <AdminAside />
-      <AdminHeader />
-      <AdminMain>{children}</AdminMain>
-    </>
-  )
+      <div>Access Denied. You do not have permission to view this page.</div>
+    );
   }
-  
+
+  if (userIsAdmin) {
+    return (
+      <>
+        <AdminAside />
+        <AdminHeader />
+        <AdminMain>{children}</AdminMain>
+      </>
+    );
+  }
 }

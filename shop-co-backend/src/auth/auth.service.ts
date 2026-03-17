@@ -125,7 +125,7 @@ export class AuthService {
       httpOnly: true,
       secure: true,
       maxAge: 1000 * 60 * 7,
-      sameSite: "lax",
+      sameSite: "none",
       path: "/",
     });
     res.clearCookie("refreshToken");
@@ -133,7 +133,7 @@ export class AuthService {
       httpOnly: true,
       secure: true,
       maxAge: 1000 * 60 * 60 * 24 * 30,
-      sameSite: "lax",
+      sameSite: "none",
       path: "/",
     });
 

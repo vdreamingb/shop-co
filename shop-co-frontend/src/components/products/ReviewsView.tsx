@@ -2,27 +2,24 @@ import { useQuery } from "@tanstack/react-query";
 import CustomersReview from "../shop/home/CustomersReview";
 import { reviewsService } from "@/services/reviews.service";
 import { userService } from "@/services/user.service";
+import { useEffect, useState } from "react";
 
 interface Props {
   id: number;
 }
 
 export default function ReviewsView({ id }: Props): React.JSX.Element {
+  const [userId, setUserId] = useState<number>(0)
+
   const { data: reviews } = useQuery({
-    queryKey: ["reviews"],
+    queryKey: ["reviews",id],
     queryFn: async () => {
       return await reviewsService.getReviewsByProductId(id);
     },
   });
 
-  const {data: user = null} = useQuery({
-    queryKey: ["user"],
-    queryFn: async () => {
-      return await userService.getUserById(id);
-    },
-  });
+  console.log(reviews)
 
-  console.log(id)
   if (!reviews || reviews.length === 0)
     return (
       <div className="my-6 container text-center integral">
@@ -34,15 +31,18 @@ export default function ReviewsView({ id }: Props): React.JSX.Element {
     <div className="my-6 container">
       <h2 className="text-2xl font-semibold mb-4 text-center">Reviews</h2>
       <ul className="">
-        {reviews?.map((review: any) => (
-          <li key={review.id} className="mb-4">
+        {reviews.map((review: any) => {
+          return (
             <CustomersReview
-              authorName={user ? `${user.firstName} ${user.lastName}` : "Anonymous"}
+            key={review.id}
+              authorName={
+                review.user? `${review.user.firstName} ${review.user.lastName}`: "Anonymous"
+              }
               comment={review.comment}
               createdAt={review.createdAt}
             />
-          </li>
-        ))}
+          );
+        })}
       </ul>
     </div>
   );
