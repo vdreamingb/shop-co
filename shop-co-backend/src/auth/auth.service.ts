@@ -123,17 +123,17 @@ export class AuthService {
     res.clearCookie("accessToken");
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       maxAge: 1000 * 60 * 7,
-      sameSite: "lax",
+      sameSite: "none",
       path: "/",
     });
     res.clearCookie("refreshToken");
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       maxAge: 1000 * 60 * 60 * 24 * 30,
-      sameSite: "lax",
+      sameSite: "none",
       path: "/",
     });
 
