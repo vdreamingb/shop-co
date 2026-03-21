@@ -28,6 +28,6 @@ export default function CustomersReview({ authorName, comment, createdAt}: Props
       <img src="/img/checked.svg" alt="Verified" />
     </div>
     <p className="text-black opacity-60">{comment}</p>
-    <p className="mt-4">Posted on: {createdAt?.split("T")[0]}</p>
+    <p className="mt-4">{createdAt?`Posted on: ${createdAt?.split("T")[0]}`:""}</p>
   </div>;
 }
