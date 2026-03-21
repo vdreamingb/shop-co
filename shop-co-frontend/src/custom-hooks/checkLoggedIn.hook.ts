@@ -1,44 +1,38 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { authService } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 
-let checkPromise: Promise<void> | null = null;
-
 export default function useCheckLoggedIn() {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
 
-    if (!checkPromise) {
-      checkPromise = (async () => {
-        try {
-          const res = await authService.loggedIn();
+    const checkAuth = async () => {
+      try {
+        const res = await authService.loggedIn();
 
-          if (!isMounted) return;
+        if (!isMounted) return;
 
-          if (res?.message === "Logged in") {
-            router.push("/profile");
-          }
-          else{
-            const res = await authService.refresh();
-            if (res === 200) {
-              router.push("/profile");
-            }else{
-                
-            }            
-          }
-        } catch (error) {
-          console.error("Error checking login status:", error);
-        } finally {
-          checkPromise = null;
+        if (res?.message === "Logged in" || res?.status === 401) {
+          router.replace("/profile");
         }
-      })();
-    }
+      } catch (error) {
+        console.error("Error checking login status:", error);
+        
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    checkAuth();
 
     return () => {
       isMounted = false;
     };
   }, [router]);
+
+  return { loading };
 }

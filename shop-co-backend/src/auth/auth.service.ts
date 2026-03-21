@@ -123,17 +123,17 @@ export class AuthService {
     res.clearCookie("accessToken");
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: true,
+      secure: false,
       maxAge: 1000 * 60 * 7,
-      sameSite: "none",
+      sameSite: "lax",
       path: "/",
     });
     res.clearCookie("refreshToken");
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: true,
+      secure: false,
       maxAge: 1000 * 60 * 60 * 24 * 30,
-      sameSite: "none",
+      sameSite: "lax",
       path: "/",
     });
 
@@ -311,12 +311,12 @@ export class AuthService {
       const accessToken = req.cookies["accessToken"];
       if (!accessToken) {
         this.logger.warn("No access token provided");
-        return { message: "Expired" };
+        throw new UnauthorizedException("Access Token expired");
       }
       this.logger.log("User logged in");
       return { message: "Logged in" };
     } catch (error) {
-      this.handleError(error);
+      throw error;
     }
   }
 }

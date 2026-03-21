@@ -1,12 +1,19 @@
 "use client";
 
-import { useEffect } from "react";
 import UserProfile from "@/components/shop/profile/UserProfile";
 import useAuth from "@/custom-hooks/auth.hook";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function ProfilePage() {
-  const {loading, isAuth} = useAuth()
+  const { loading, isAuth } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !isAuth) {
+      // router.push("/login");
+    }
+  }, [loading, isAuth, router]);
 
   if (loading || !isAuth) {
     return (
